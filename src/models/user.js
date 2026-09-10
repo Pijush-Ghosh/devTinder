@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 var validator = require('validator');
 const jwt = require("jsonwebtoken");
+const bcrypt=require("bcrypt");
 
 
 const userSchema = new Schema({
@@ -21,7 +22,7 @@ const userSchema = new Schema({
       required: true,
       unique: true,
       trim: true,
-      validate(value) {
+      validate(value) {                        //mongoose automatically run these while saving
         if (!validator.isEmail(value)) {
           throw new Error("Invalid Email :" + value);
         }
@@ -32,6 +33,7 @@ const userSchema = new Schema({
       required: true,
       validate(value) {
         if (!validator.isStrongPassword(value)) {
+         
           throw new Error("Enter Strong password :" + value);
         }
       },
@@ -81,6 +83,17 @@ userSchema.methods.getJwt = function () {
   
   return token;
 
+};
+userSchema.methods.validatePassword = async function (passwordInputByUser) {
+  const user = this;
+  const passwordHash = user.password;
+
+  const isPasswordValid = await bcrypt.compare(
+    passwordInputByUser,
+    passwordHash
+  );
+
+  return isPasswordValid;
 };
 
 

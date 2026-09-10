@@ -7,7 +7,7 @@ const userAuth = async (req, res, next) => {
       return res.status(401).send("Please Login or Signup");
     }
 
-    const deocodedObj = await jwt.verify(token, 'someSecretCode');
+    const deocodedObj =  jwt.verify(token, 'someSecretCode');
     const { id } = deocodedObj;
 
     const user = await User.findById(id);
@@ -21,5 +21,4 @@ const userAuth = async (req, res, next) => {
   }
 };
 
-module.exports =
-  userAuth
+module.exports = {userAuth}

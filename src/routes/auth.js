@@ -2,7 +2,7 @@ const express = require("express");
 const authRouter = express.Router();
 const User = require("../models/user");
 const validator = require("validator");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const { validateSignupData } = require("../utils/validation");
 
 //signup api for signing the user
@@ -41,7 +41,7 @@ authRouter.post("/signup", async (req, res) => {
       skills,
     });
     const savedUser = await user.save();
-    const token = await savedUser.getjwt();
+    const token = await savedUser.getJwt();
     res.cookie("token", token, {
       expires: new Date(Date.now() + 8 * 3600000),
     });
@@ -63,14 +63,15 @@ authRouter.post("/login", async (req, res) => {
     if (!user) {
       throw new Error("Invalid Credentials");
     }
-    const isValidPassword = await user.validatePassword(password);
+    const isValidPassword = await user.validatePassword(password);  //schema methods
     if (isValidPassword) {
-      const token = await user.getjwt();
+      const token = await user.getJwt();
       res.cookie("token", token, {
         expires: new Date(Date.now() + 8 * 3600000),
       });
       res.status(200).json({ user });
     } else {
+      console.log("check")
       throw new Error("Invalid Vredentials");
     }
   } catch (err) {

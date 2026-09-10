@@ -25,10 +25,10 @@ app.use(express.json()); //this is needed to read the req.body which is send wit
 app.use(cookieParser()); //this middleware is needed to read the cookies
 
 //routes
-const authRouter = require("./src/routes/auth");
-const profileRouter = require("./src/routes/profile");
-const requestRouter = require("./src/routes/request");
-const userRouter = require("./src/routes/user");
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
+const userRouter = require("./routes/user");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
